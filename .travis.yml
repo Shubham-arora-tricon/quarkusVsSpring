@@ -1,0 +1,15 @@
+language: java
+
+os: linux
+
+jdk:
+  - openjdk8
+
+before_install:
+  - mvn package
+
+script:
+  - docker build -t shubhamtricon/springVsQuarkus:$TRAVIS_BUILD_ID .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker tag shubhamtricon/springVsQuarkus:$TRAVIS_BUILD_ID shubhamtricon/springVsQuarkus:$TRAVIS_BUILD_ID
+  - docker push shubhamtricon/springVsQuarkus:$TRAVIS_BUILD_ID
